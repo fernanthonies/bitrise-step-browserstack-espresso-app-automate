@@ -128,7 +128,7 @@ inputs:
         "Set this parameter if you want to run tests that have @SmallTest, @MediumTest and @LargeTest annotations."
       description: "Set this parameter if you want to run tests that have @SmallTest, @MediumTest and @LargeTest annotations."
       is_required: false
-  - browserstack_device_logs:
+  - browserstack_device_logs: "true"
     opts:
       title: "Device Logs"
       category: Automated Test Options
@@ -138,7 +138,7 @@ inputs:
       value_options:
         - "true"
         - "false"
-  - browserstack_video:
+  - browserstack_video: "true"
     opts:
       title: "Video"
       category: Automated Test Options
@@ -148,7 +148,7 @@ inputs:
       value_options:
         - "true"
         - "false"
-  - browserstack_local:
+  - browserstack_local: "false"
     opts:
       title: "Local"
       category: Automated Test Options
@@ -165,7 +165,7 @@ inputs:
       summary: "If you are using same account to test multiple applications, you can setup named connection using the localIdentifier option."
       description: "If you are using same account to test multiple applications, you can setup named connection using the localIdentifier option."
       is_required: false
-  - browserstack_gps_location:
+  - browserstack_gps_location: "40.730610,-73.935242"
     opts:
       title: "GPS Location"
       category: Automated Test Options
