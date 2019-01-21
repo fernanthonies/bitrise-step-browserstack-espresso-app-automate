@@ -1,22 +1,20 @@
 #!/bin/bash
-set -ex
+#set -ex
+echo "uploading app apk to browserstack"
+upload_app_response="$(curl -u $browserstack_username:$browserstack_access_key -X POST https://api-cloud.browserstack.com/app-automate/upload -F file=@$app_apk_path)"
+app_url=$(echo "$upload_app_response" | jq .app_url)
 
-echo "This is the value specified for the input 'example_step_input': ${example_step_input}"
+echo "uploading test apk to browserstack"
+upload_test_response="$(curl -u $browserstack_username:$browserstack_access_key -X POST https://api-cloud.browserstack.com/app-automate/espresso/test-suite -F file=@$test_apk_path)"
+test_url=$(echo "$upload_test_response" | jq .test_url)
 
-#
-# --- Export Environment Variables for other Steps:
-# You can export Environment Variables for other Steps with
-#  envman, which is automatically installed by `bitrise setup`.
-# A very simple example:
-envman add --key EXAMPLE_STEP_OUTPUT --value 'the value you want to share'
-# Envman can handle piped inputs, which is useful if the text you want to
-# share is complex and you don't want to deal with proper bash escaping:
-#  cat file_with_complex_input | envman add --KEY EXAMPLE_STEP_OUTPUT
-# You can find more usage examples on envman's GitHub page
-#  at: https://github.com/bitrise-io/envman
+echo "starting automated tests"
+json=$( jq -n \
+                --argjson app_url $app_url \
+                --argjson test_url $test_url \
+                --argjson devices ["$browserstack_device_list"] \
+                '{devices: $devices, app: $app_url, testSuite: $test_url}')
+run_test_response="$(curl -X POST https://api-cloud.browserstack.com/app-automate/espresso/build -d \ "$json" -H "Content-Type: application/json" -u "$browserstack_username:$browserstack_access_key")"
+build_id=$(echo "$run_test_response" | jq .build_id | envman add --key BROWSERSTACK_BUILD_ID)
 
-#
-# --- Exit codes:
-# The exit code of your Step is very important. If you return
-#  with a 0 exit code `bitrise` will register your Step as "successful".
-# Any non zero exit code will be registered as "failed" by `bitrise`.
+echo "build id: $build_id"
