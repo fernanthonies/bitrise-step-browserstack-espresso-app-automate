@@ -84,7 +84,7 @@ inputs:
       is_expand: true
       is_required: true
       is_sensitive: true
-  - browserstack_device_list:
+  - browserstack_device_list: "Google Pixel-8.0", "Google Pixel-7.1"
     opts:
       title: "Device list"
       category: Automated Test Options
