@@ -37,10 +37,8 @@ run_if: ""
 
 deps:
   brew:
-  - name: wget
   - name: curl
   apt_get:
-  - name: wget
   - name: curl
 
 
