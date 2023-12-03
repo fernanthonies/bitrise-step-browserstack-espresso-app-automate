@@ -40,6 +40,7 @@ deps:
   - name: curl
   apt_get:
   - name: curl
+  - name: jq
 
 inputs:
   - app_apk_path: $BITRISE_APK_PATH
